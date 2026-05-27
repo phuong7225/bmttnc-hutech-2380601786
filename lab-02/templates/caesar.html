@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Caesar Cipher Demo</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef2f5;
+            color: #1f2933;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .page {
+            width: min(940px, 100%);
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(26px, 4vw, 40px);
+            line-height: 1.1;
+            color: #102a43;
+        }
+
+        header a {
+            color: #0b7285;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+            gap: 18px;
+        }
+
+        form,
+        .result {
+            background: #ffffff;
+            border: 1px solid #d9e2ec;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #334e68;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            border: 1px solid #bcccdc;
+            border-radius: 6px;
+            padding: 12px;
+            font: inherit;
+            color: #102a43;
+            background: #ffffff;
+        }
+
+        textarea {
+            min-height: 220px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        input {
+            min-height: 44px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        button {
+            min-height: 44px;
+            border: 0;
+            border-radius: 6px;
+            font: inherit;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        button[value="encrypt"] {
+            background: #0b7285;
+        }
+
+        button[value="decrypt"] {
+            background: #2b8a3e;
+        }
+
+        button:hover {
+            filter: brightness(0.94);
+        }
+
+        .result h2 {
+            margin: 0 0 12px;
+            font-size: 18px;
+            color: #334e68;
+        }
+
+        .output {
+            min-height: 220px;
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid #bcccdc;
+            background: #f8fafc;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        .empty {
+            color: #829ab1;
+        }
+
+        .error {
+            margin-top: 12px;
+            color: #b42318;
+            font-weight: 700;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 16px;
+            }
+
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header>
+            <h1>Caesar Cipher Demo</h1>
+            <a href="{{ url_for('index') }}">Home</a>
+        </header>
+
+        <section class="workspace">
+            <form method="post">
+                <div class="field">
+                    <label for="text">Text</label>
+                    <textarea id="text" name="text" required>{{ text }}</textarea>
+                </div>
+
+                <div class="field">
+                    <label for="key">Key</label>
+                    <input id="key" name="key" type="number" value="{{ key }}" required>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" name="action" value="encrypt">Encrypt</button>
+                    <button type="submit" name="action" value="decrypt">Decrypt</button>
+                </div>
+
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+            </form>
+
+            <aside class="result">
+                <h2>Result</h2>
+                {% if result %}
+                    <div class="output">{{ result }}</div>
+                {% else %}
+                    <div class="output empty">No result yet.</div>
+                {% endif %}
+            </aside>
+        </section>
+    </main>
+</body>
+</html>
